@@ -57,7 +57,7 @@ int main(int argc, char** argv){
 
   ros::NodeHandle n;
   ros::Publisher odom_pub = n.advertise<nav_msgs::Odometry>("odom", 50);
-  //ros::Subscriber sub = n.subscribe<geometry_msgs::Twist>("/cmd_vel",50,&velCallback);
+  ros::Subscriber sub = n.subscribe<geometry_msgs::Twist>("/cmd_vel",50,&velCallback);
   tf::TransformBroadcaster odom_broadcaster;
 
   double x = 0.0;
@@ -72,11 +72,11 @@ int main(int argc, char** argv){
   new_vel.linear.y = 0.0;
   new_vel.angular.z = 0.0;
 
-
+/*
   double vx = new_vel.linear.x;
   double vy = new_vel.linear.y;
   double vth = new_vel.angular.z;
-
+*/
   ros::Time current_time, last_time;
   current_time = ros::Time::now();
   last_time = ros::Time::now();
@@ -84,6 +84,9 @@ int main(int argc, char** argv){
   ros::Rate r(10.0);
   while(n.ok()){
     ros::spinOnce();
+    double vx = new_vel.linear.x;
+    double vy = new_vel.linear.y;
+    double vth = new_vel.angular.z;
     current_time = ros::Time::now();
     ROS_INFO("%f\n", new_vel.angular.z);
     //compute odometry in a typical way given the velocities of the robot
